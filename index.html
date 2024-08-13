@@ -1,0 +1,102 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Aug  7 13:06:32 2024
+
+@author: v-rakshithcr
+"""
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetes Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            width: 300px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Diabetes Prediction</h1>
+        <input type="number" id="pregnancies" placeholder="Pregnancies">
+        <input type="number" id="glucose" placeholder="Glucose">
+        <input type="number" id="bloodPressure" placeholder="Blood Pressure">
+        <input type="number" id="skinThickness" placeholder="Skin Thickness">
+        <input type="number" id="insulin" placeholder="Insulin">
+        <input type="number" id="bmi" placeholder="BMI">
+        <input type="number" id="dpf" placeholder="Diabetes Pedigree Function">
+        <input type="number" id="age" placeholder="Age">
+        <button onclick="predict()">Predict</button>
+        <div id="result"></div>
+    </div>
+    <script>
+        async function predict() {
+            const data = {
+                pregnancies: parseInt(document.getElementById('pregnancies').value),
+                Glucose: parseFloat(document.getElementById('glucose').value),
+                BloodPressure: parseFloat(document.getElementById('bloodPressure').value),
+                SkinThickness: parseFloat(document.getElementById('skinThickness').value),
+                Insulin: parseFloat(document.getElementById('insulin').value),
+                BMI: parseFloat(document.getElementById('bmi').value),
+                DiabetesPedigreeFunction: parseFloat(document.getElementById('dpf').value),
+                Age: parseInt(document.getElementById('age').value)
+            };
+
+            const response = await fetch('http://127.0.0.1:8000/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            document.getElementById('result').innerText = result.prediction;
+        }
+    </script>
+</body>
+</html>
+#python -m http.server 8080
